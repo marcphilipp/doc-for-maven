@@ -14,6 +14,7 @@ Apache, Apache Maven™, and the Apache Maven™ logo are either registered trad
 """
 repo_name = "apache/maven"
 repo_url = "https://github.com/apache/maven"
+edit_uri = "https://github.com/support-and-care/doc-for-maven/edit/main/docs/"
 extra_css = ["assets/stylesheets/extra.css"]
 
 nav = [
@@ -185,6 +186,7 @@ language = "en"
 logo = "assets/maven.svg"
 features = [
   "announce.dismiss",
+  "content.action.edit",
   "content.code.copy",
   "navigation.footer",
   "navigation.path",
