@@ -68,7 +68,13 @@ The `-T` option sets the number of threads, either as a fixed number or relative
 mvn -T 1C verify
 ```
 
-Gradle also runs subprojects in parallel only when you pass `--parallel`, so in both tools this is something you have to turn on.
+Gradle also runs tasks in parallel only when you pass `--parallel`, so in both tools this is something you have to turn on.
+
+The two tools differ in how finely they schedule the work.
+Gradle schedules individual tasks, so a subproject can start compiling as soon as the subprojects it depends on have been compiled, while their tests may still be running.
+Maven's default builder runs a subproject through all requested phases, including its tests, before any subproject that depends on it can start, which leaves Gradle more to run in parallel.
+Maven 4 ships a builder (selected with `-b concurrent`) that works phase by phase instead and lets a dependent subproject start as soon as its dependencies are ready.
+For Maven 3, the [maven-turbo-builder](https://github.com/maven-turbo-reactor/maven-turbo-builder) extension does something similar: it runs `package` before `test` and starts dependent subprojects as soon as their dependencies are packaged.
 
 ## The Maven daemon
 
