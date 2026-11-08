@@ -18,7 +18,7 @@ Before you trust a benchmark, check how it was set up:
 | Was it a clean build or an incremental one? | Incremental builds favor whichever tool has better up-to-date checks and caching. |
 | Was a build cache enabled, and on which side? | A cache hit skips the work. |
 | Did both builds do the same work? | `gradle build` and `mvn install` run different sets of tasks. |
-| How large was the project? | Overhead that is negligible for ten modules can matter for three hundred. |
+| How large was the project? | Overhead that is negligible for ten subprojects can matter for three hundred. |
 
 !!! tip "Look at your own build first"
     Few teams keep a project in two build tools long enough to compare them fairly.
@@ -28,7 +28,7 @@ Before you trust a benchmark, check how it was set up:
 
 That being said, there are cases where Gradle is faster.
 Its up-to-date checks work per task and its compilation is incremental at the class level.
-When you change one file and rebuild, Gradle therefore often does less work than Maven, where plugins mostly decide per module whether to rebuild.
+When you change one file and rebuild, Gradle therefore often does less work than Maven, where plugins mostly decide per subproject whether to rebuild.
 On a developer machine where builds are run many times a day with small changes in between, this difference can be noticeable.
 For clean builds and on CI runners that start from scratch, it's mostly negligible.
 
@@ -61,14 +61,14 @@ The plugin figure comes from running `mvn package` on a small JUnit 5 project wi
 
 ## Parallel builds
 
-In a multi-module project, Maven can build modules that don't depend on each other at the same time.
+In a project with several subprojects, Maven can build subprojects that don't depend on each other at the same time.
 The `-T` option sets the number of threads, either as a fixed number or relative to the available CPU cores:
 
 ```bash
 mvn -T 1C verify
 ```
 
-Gradle also runs projects in parallel only when you pass `--parallel`, so in both tools this is something you have to turn on.
+Gradle also runs subprojects in parallel only when you pass `--parallel`, so in both tools this is something you have to turn on.
 
 ## The Maven daemon
 
@@ -86,7 +86,7 @@ The first build takes about as long as a regular Maven build because the daemon 
 
 ## The build cache
 
-The [Maven Build Cache Extension](https://maven.apache.org/extensions/maven-build-cache-extension/) stores the outputs of each module, and when a module's inputs haven't changed, Maven restores its outputs from the cache instead of building it again.
+The [Maven Build Cache Extension](https://maven.apache.org/extensions/maven-build-cache-extension/) stores the outputs of each subproject, and when a subproject's inputs haven't changed, Maven restores its outputs from the cache instead of building it again.
 The cache can be local, or remote so that CI and developers share results.
 
 To enable it, add the extension to `.mvn/extensions.xml` in your project root:
@@ -101,7 +101,7 @@ To enable it, add the extension to `.mvn/extensions.xml` in your project root:
 </extensions>
 ```
 
-After that, a second `mvn verify` with no changes restores every module from the cache.
+After that, a second `mvn verify` with no changes restores every subproject from the cache.
 The extension's documentation covers remote caches and how to tune which inputs count.
 
 ## Maintenance effort
