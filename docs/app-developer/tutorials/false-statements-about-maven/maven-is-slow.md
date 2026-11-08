@@ -122,9 +122,11 @@ You can upgrade Maven first and raise the model version later, when you want the
 
 ## Conclusion
 
+Measured on equal terms, Maven is not slow.
 Starting a JVM and reading the POMs is nearly all the overhead a Maven build has, and most of the speed difference people cite comes from Gradle's daemon and build cache rather than from the tools themselves.
-Maven offers parallel builds, a daemon and a build cache as well, none of which require changes to the project, and on fresh CI runners its much smaller download is an advantage.
-Gradle keeps an edge for incremental builds on a developer machine, at the cost of keeping the build compatible with its caching features.
+Maven has both, along with parallel builds, and none of them require changes to the project.
+On fresh CI runners its much smaller download is an advantage on top.
+Gradle can be faster for incremental builds on a developer machine, but that advantage depends on keeping the build compatible with its caching features.
 If build time is your reason for considering a switch, profile your current build first to see where the time goes.
 
 ## Next steps
